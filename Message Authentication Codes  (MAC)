@@ -1,4 +1,33 @@
-Code: Python code for implementing MD5 Algorithm 
+"""Examples: MD5 and SHA1 hashing.
+
+This file provides two small examples and is safe to run in non-interactive
+environments (falls back to example values when input() raises EOFError).
+"""
+
+import hashlib
+
+
+def md5_digest(data: bytes) -> bytes:
+    return hashlib.md5(data).digest()
+
+
+def sha1_hexdigest(text: str) -> str:
+    return hashlib.sha1(text.encode('utf-8')).hexdigest()
+
+
+if __name__ == '__main__':
+    # MD5 examples
+    a = b'Ismile'
+    b = b'Esmile'
+    print('MD5 digest of', a, ':', md5_digest(a))
+    print('MD5 digest of', b, ':', md5_digest(b))
+
+    # SHA1 example with safe input
+    try:
+        s = input('Enter the value to encode (SHA1): ')
+    except EOFError:
+        s = 'example'
+    print('SHA1 hexdigest of', s, ':', sha1_hexdigest(s))Code: Python code for implementing MD5 Algorithm 
 importhashlib 
 result = hashlib.md5(b'Ismile') 
 result1 = hashlib.md5(b'Esmile') 
