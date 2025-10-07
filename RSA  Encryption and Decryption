@@ -1,17 +1,31 @@
-Code: Python code for implementing RSA Algorithm 
-fromCrypto.PublicKey import RSA 
-fromCrypto.Cipher import PKCS1_OAEP 
-importbinascii 
-keyPair = RSA.generate(1024) 
-pubKey = keyPair.publickey() 
-print(f"Public key:  (n={hex(pubKey.n)}, e={hex(pubKey.e)})") 
-pubKeyPEM = pubKey.exportKey() 
-print(pubKeyPEM.decode('ascii')) 
-print(f"Private key: (n={hex(pubKey.n)}, d={hex(keyPair.d)})") 
-privKeyPEM = keyPair.exportKey() 
-print(privKeyPEM.decode('ascii')) 
-#encryption 
-msg = 'Ismile Academy' 
-encryptor = PKCS1_OAEP.new(pubKey) 
-encrypted = encryptor.encrypt(msg) 
-print("Encrypted:", binascii.hexlify(encrypted))
+"""RSA encrypt/decrypt demo using pycryptodome."""
+
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP
+import binascii
+
+
+def rsa_demo(message: str, key_size: int = 1024):
+    # Generate RSA key pair
+    key_pair = RSA.generate(key_size)
+    pub_key = key_pair.publickey()
+
+    print(f"Public key:  (n={hex(pub_key.n)}, e={hex(pub_key.e)})")
+    print(pub_key.export_key().decode('ascii'))
+
+    print(f"Private key: (n={hex(pub_key.n)}, d={hex(key_pair.d)})")
+    print(key_pair.export_key().decode('ascii'))
+
+    # Encryption
+    encryptor = PKCS1_OAEP.new(pub_key)
+    encrypted = encryptor.encrypt(message.encode('utf-8'))
+    print("Encrypted (hex):", binascii.hexlify(encrypted))
+
+    # Decryption
+    decryptor = PKCS1_OAEP.new(key_pair)
+    decrypted = decryptor.decrypt(encrypted)
+    print("Decrypted:", decrypted.decode('utf-8'))
+
+
+if __name__ == '__main__':
+    rsa_demo('Ismile Academy', key_size=1024)
