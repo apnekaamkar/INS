@@ -18,44 +18,53 @@ def encrypt(text,s):
  
  return result 
  
-#check the above function 
-text=input(" Enter the text to encrypt ") 
-s = 3 
-print("Text : " + text) 
-str(s) 
-print( "Cipher: " + encrypt(text,s)) 
- 
- 
- 
- 
- 
-# Code: Python code for implementing Railfence Cipher 
-string=input("enter a string") 
-def RailFence(txt): 
-    result="" 
-    for i in range(len(string)): 
-        if(i%2==0): 
-            result+=string[i] 
-    for i in range(len(string)): 
-        if(i%2!=0): 
-            result += string[i] 
-    return result 
-print(RailFence(string)) 
- 
-# Code: Java code for implementing Railfence Cipher 
-public class railfence { 
-public static void main(String args[]) 
-{ 
-String input = "ismile"; 
-String output = ""; 
-intlen = input.length(),flag = 0; 
-System.out.println("Input String : " + input); 
-for(int i=0;i<len;i+=2) { 
-output += input.charAt(i); 
-} 
-for(int i=1;i<len;i+=2) { 
-output += input.charAt(i); 
-} 
-System.out.println("Ciphered Text : "+output); 
-} 
-} 
+"""Simple scripts: Caesar cipher and a 2-rail Railfence cipher.
+
+This file provides small, self-contained functions for demonstration.
+When run non-interactively (e.g., by automated tests), the code falls
+back to example values so it doesn't block on input().
+"""
+
+from typing import List
+
+
+def encrypt_caesar(text: str, shift: int) -> str:
+    """Encrypt `text` using a Caesar cipher with the given shift.
+    Non-alphabetic characters are preserved."""
+    result: List[str] = []
+    for ch in text:
+        if ch.isupper():
+            result.append(chr((ord(ch) - 65 + shift) % 26 + 65))
+        elif ch.islower():
+            result.append(chr((ord(ch) - 97 + shift) % 26 + 97))
+        else:
+            result.append(ch)
+    return ''.join(result)
+
+
+def railfence_encrypt(text: str) -> str:
+    """Simple 2-rail Railfence encryption: take chars at even indices then odd indices."""
+    evens = [text[i] for i in range(0, len(text), 2)]
+    odds = [text[i] for i in range(1, len(text), 2)]
+    return ''.join(evens + odds)
+
+
+if __name__ == '__main__':
+    # Caesar cipher example (use fallback when input() is not available)
+    try:
+        text = input("Enter the text to encrypt (Caesar): ")
+    except EOFError:
+        text = "Hello, World!"
+
+    shift = 3
+    print("Original text:", text)
+    print("Caesar cipher:", encrypt_caesar(text, shift))
+
+    # Railfence example (use fallback when input() is not available)
+    try:
+        rf_text = input("Enter a string for Railfence (press enter to skip): ")
+    except EOFError:
+        rf_text = "rail fence example"
+
+    if rf_text:
+        print("Railfence (2-rail) cipher:", railfence_encrypt(rf_text))
